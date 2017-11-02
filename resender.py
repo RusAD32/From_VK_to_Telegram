@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import random
 import re
 import os
@@ -100,7 +102,6 @@ def send_to_telegram():
             pickle.dump(posts, dump)
 
 
-
 def split_closest_to(string, sep, length):
     lines = string.split(sep)
     cur_line = ""
@@ -113,6 +114,11 @@ def split_closest_to(string, sep, length):
             cur_line += sep + line
     res.append(cur_line) if cur_line != "" else False
     return res
+
+
+@bot.message_handler(content_types=["text"])
+def response(m):
+    bot.send_message(m.chat.id, "Sorry, now for channel posting purposes only")
 
 
 if __name__ == "__main__":
