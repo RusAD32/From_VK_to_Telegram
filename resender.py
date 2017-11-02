@@ -5,6 +5,7 @@ import re
 import os
 import pickle
 import schedule
+import threading
 
 import time
 from requests import get
@@ -121,10 +122,17 @@ def response(m):
     bot.send_message(m.chat.id, "Sorry, now for channel posting purposes only")
 
 
-if __name__ == "__main__":
-    schedule.every().day.at("9:00").do(check_all)
-    schedule.every().sunday.at("10:00").do(send_to_telegram)
+def pend():
     while True:
         schedule.run_pending()
         time.sleep(10)
+
+
+if __name__ == "__main__":
+    schedule.every().day.at("9:00").do(check_all)
+    schedule.every().sunday.at("10:00").do(send_to_telegram)
+    t = threading.Thread(target=pend)
+    t.daemon = True
+    t.start()
+    bot.polling(none_stop=True)
 
